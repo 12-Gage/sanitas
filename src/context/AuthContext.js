@@ -4,18 +4,18 @@ import { createContext, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 
-const AuthContext = createContext()
+const AuthContext = createContext({})
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const router = userRouter();
+    const router = useRouter();
 
     const login = async (username, password) => {
         try {
             const formData = new FormData();
             formData.append('username', username);
             formData.append('password', password);
-            const response = await axios.post('htttp://localhost:8000/auth/token', formData, {
+            const response = await axios.post('http://localhost:8000/auth/token', formData, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }

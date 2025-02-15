@@ -3,8 +3,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useContext, useState, useEffect } from "react";
-import AuthContext from "../../context/AuthContext";
-import ProtectedRoute from "../../components/ProtectedRoute";
+import AuthContext from "../context/AuthContext.js";
+import ProtectedRoute from "../components/ProtectedRoute.js";
 import axios from "axios";
 
 const Home = () => {
@@ -71,7 +71,6 @@ const Home = () => {
             </ul>
           )}
 
-          {/* ✅ Logout Button */}
           <button onClick={logout} className={styles.primary}>
             Logout
           </button>
