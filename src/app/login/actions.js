@@ -3,10 +3,10 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-import { createClient } from '/Users/gm/Desktop/senior-proj/Sanitas/frontend/sanitas/src/app/supabase/server.js'
+import { supabase } from '@/utils/supabaseClient'
+
 
 export async function login(formData) {
-  const supabase = await createClient()
 
   // type-casting here for convenience
   // in practice, you should validate your inputs

@@ -1,27 +1,43 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import { supabase } from '@/utils/supabaseClient'
 import { useRouter } from 'next/navigation'
 
-export default function SignIn() {
+export default function Home() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [user, setUser] = useState(null)
 
-  const handleSignIn = async () => {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    setLoading(false)
-    if (error) {
-      alert(error.message)
-    } else {
-      router.push('/')
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push('/login') // Redirect to login if not authenticated
+      } else {
+        setUser(user)
+      }
     }
-  }
+
+    checkUser()
+  }, [router])
+
+  return (
+    <main className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-3xl font-bold">Welcome to My Fitness App</h1>
+      {user && <p className="mt-2 text-lg">Hello, {user.email}!</p>}
+      <button
+        onClick={async () => {
+          await supabase.auth.signOut()
+          router.push('/login') // Redirect to login after logout
+        }}
+        className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+      >
+        Sign Out
+      </button>
+    </main>
+  )
+
+
 
   const handleSignUp = async () => {
     setLoading(true)
@@ -70,4 +86,4 @@ export default function SignIn() {
       </button>
     </main>
   )
-}
+  }
