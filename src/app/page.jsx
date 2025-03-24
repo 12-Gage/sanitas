@@ -3,10 +3,14 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/utils/supabaseClient'
 import { useRouter } from 'next/navigation'
+import { Box } from '@mui/material'
+import WorkoutCard from '@/components/workoutCard'
 
 export default function Home() {
   const router = useRouter()
   const [user, setUser] = useState(null)
+  const [workouts, setWorkouts] = useState([])
+  
 
   useEffect(() => {
     const checkUser = async () => {
@@ -17,18 +21,37 @@ export default function Home() {
         setUser(user)
       }
     }
-
     checkUser()
   }, [router])
 
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      const { data, error } = await supabase
+        .from('workouts')
+        .select('*')
+      if (error) {
+        console.error('Error fetching workouts:', error.message)
+      } else {
+        setWorkouts(data)
+      }
+    }
+    fetchWorkouts()
+  }, [])
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-3xl font-bold">Welcome to My Fitness App</h1>
+      <h1 className="text-3xl font-bold">Welcome to Sanitas Analytics</h1>
       {user && <p className="mt-2 text-lg">Hello, {user.email}!</p>}
+      <h1 className="text-2xl font-bold mb-4">Your Workouts</h1>
+        <Box>
+          {workouts.map((workout) => (
+            <WorkoutCard key={workout.id} workout={workout} />
+          ))}
+        </Box>
       <button
         onClick={async () => {
           await supabase.auth.signOut()
-          router.push('/login') // Redirect to login after logout
+          router.push('/login') 
         }}
         className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
       >
