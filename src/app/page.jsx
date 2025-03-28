@@ -1,20 +1,21 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/utils/supabaseClient'
 import { useRouter } from 'next/navigation'
-import { Box } from '@mui/material'
-import WorkoutCard from '@/components/workoutCard'
+import WorkoutCard from '@/components/WorkoutCard'
+import Navbar from '@/components/Navbar' 
+import { supabase } from '@/utils/supabaseClient'
 
 export default function Home() {
-  const router = useRouter()
   const [user, setUser] = useState(null)
   const [workouts, setWorkouts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
   
-
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
+      console.log("Logged-in user ID:", user.id);
       if (!user) {
         router.push('/login') // Redirect to login if not authenticated
       } else {
@@ -26,28 +27,47 @@ export default function Home() {
 
   useEffect(() => {
     const fetchWorkouts = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login"); // Redirect if not logged in
+        return;
+      }
+
       const { data, error } = await supabase
         .from('workouts')
         .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+        
+      console.log("Fetched workouts:", data, "Error:", error);
+
       if (error) {
-        console.error('Error fetching workouts:', error.message)
+        console.error("Error fetching workouts:", error);
       } else {
-        setWorkouts(data)
+        console.log("Fetched workouts:", data);
+        setWorkouts(data); 
       }
-    }
-    fetchWorkouts()
-  }, [])
+
+      setLoading(false);
+    };
+
+    fetchWorkouts();
+  }, []);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="text-3xl font-bold">Welcome to Sanitas Analytics</h1>
       {user && <p className="mt-2 text-lg">Hello, {user.email}!</p>}
-      <h1 className="text-2xl font-bold mb-4">Your Workouts</h1>
-        <Box>
-          {workouts.map((workout) => (
-            <WorkoutCard key={workout.id} workout={workout} />
-          ))}
-        </Box>
+      <h2 className="text-xl font-bold mt-4">Your Workouts:</h2>
+        <div>
+        {loading ? (
+        <p>Loading...</p>
+      ) : workouts.length > 0 ? (
+        workouts.map((workout) => <WorkoutCard key={workout.id} workout={workout} />)
+      ) : (
+        <p>No workouts found.</p>
+      )}
+        </div>
       <button
         onClick={async () => {
           await supabase.auth.signOut()
@@ -57,6 +77,7 @@ export default function Home() {
       >
         Sign Out
       </button>
+      <Navbar />
     </main>
   )
 

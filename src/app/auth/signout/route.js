@@ -1,11 +1,8 @@
-import { createClient } from '/Users/gm/Desktop/senior-proj/Sanitas/frontend/sanitas/src/app/supabase/server.js'
+import { supabase } from '@/utils/supabaseClient'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function POST(req) {
-  const supabase = await createClient()
-
-  // Check if a user's logged in
   const {
     data: { user },
   } = await supabase.auth.getUser()
