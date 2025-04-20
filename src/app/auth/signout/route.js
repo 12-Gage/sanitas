@@ -1,8 +1,9 @@
-import { supabase } from '@/utils/supabaseClient'
+import { createClient } from '@/utils/supabase/client'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function POST(req) {
+  const supabase = createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()

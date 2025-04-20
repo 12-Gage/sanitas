@@ -1,12 +1,13 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { supabase } from '@/utils/supabaseClient'
+import { createClient } from '@/utils/supabase/client'
 
 export default function ConfirmEmail() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [status, setStatus] = useState('Confirming your email...')
+  const supabase = createClient()
 
   useEffect(() => {
     const confirmEmail = async () => {

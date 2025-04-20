@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import WorkoutCard from '@/components/WorkoutCard'
 import Navbar from '@/components/Navbar' 
-import { supabase } from '@/utils/supabaseClient'
+import { createClient } from '@/utils/supabase/client'
 
 export default function Home() {
   const [user, setUser] = useState(null)
   const [workouts, setWorkouts] = useState([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const supabase = createClient()
   
   useEffect(() => {
     const checkUser = async () => {

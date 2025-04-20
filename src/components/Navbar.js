@@ -5,9 +5,10 @@ import AddIcon from '@mui/icons-material/Add';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useRouter } from "next/navigation";
-import { supabase } from "@/utils/supabaseClient";
+import { createClient } from "@/utils/supabase/client";
 
 export default function Navbar() {
+  const supabase = createClient();
   const router = useRouter();
   const [value, setValue] = React.useState('recents');
 

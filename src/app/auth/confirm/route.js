@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { supabase } from '@/utils/supabaseClient'
+import { createClient } from '@/utils/supabase/client'
 
 // Creating a handler to a GET request to route /auth/confirm
 export async function GET(request) {
@@ -8,6 +8,7 @@ export async function GET(request) {
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type')
   const next = '/account'
+  const supabase = createClient()
 
   // Create redirect link without the secret token
   const redirectTo = request.nextUrl.clone()

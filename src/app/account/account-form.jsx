@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '@/utils/supabaseClient'
+import { createClient } from '@/utils/supabase/client'
 
 export default function AccountForm({ user }) {
   const [loading, setLoading] = useState(true)
@@ -8,6 +8,7 @@ export default function AccountForm({ user }) {
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
   const [avatar_url, setAvatarUrl] = useState(null)
+  const supabase = createClient()
 
   const getProfile = useCallback(async () => {
     try {
