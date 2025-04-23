@@ -21,9 +21,9 @@ export default function WorkoutCard({workout}) {
               {workout.type}
             </Typography>
             <Typography variant="body2">
-                <strong>Date:</strong> {workout.created_at} <br />
+                <strong>{workout.name}</strong><br />
+                <strong>Date:</strong> {workout.created_at.split('T')[0]} <br />
                 <strong>Location:</strong> {workout.location} <br />
-                <strong>Duration:</strong> {workout.duration} <br />
                 <strong>Notes:</strong> {workout.notes || 'No notes'}
             </Typography>
           </CardContent>

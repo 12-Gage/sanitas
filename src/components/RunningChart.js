@@ -24,7 +24,7 @@ ChartJS.register(
 
 export default function RunningChart({ data }) {
   const chartData = {
-    labels: data.map(item => item.date),
+    labels: data.map(item => item.created_at.split('T')[0]),
     datasets: [
       {
         label: 'Miles Ran',
