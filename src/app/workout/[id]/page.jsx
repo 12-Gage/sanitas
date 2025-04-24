@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import RunningChart from "@/components/RunningChart";
 import { getWeekRange } from '@/components/DateRanges'
+import Navbar from "@/components/Navbar";
 
 export default async function WorkoutDetails(context) {
   const supabase = await createClient()
@@ -34,7 +35,7 @@ export default async function WorkoutDetails(context) {
 
       <h2>Workout Chart</h2>
       <RunningChart data={runs}/>
-      
+      <Navbar />
     </div>
   );
 }
