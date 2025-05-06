@@ -1,23 +1,16 @@
 import { createClient } from "@/utils/supabase/server";
 import RunningChart from "@/components/RunningChart";
 import WeightsChart from "@/components/WeightsChart";
-import { getWeekRange } from '@/components/DateRanges'
 import Navbar from "@/components/Navbar";
-//import { useState } from "react";
 // import Select, { SelectChangeEvent } from '@mui/material/Select';
 // import MenuItem from '@mui/material/MenuItem';
 // import InputLabel from '@mui/material/InputLabel';
 
 
-// const handleChange = (e) => {
-
-// }
-
 export default async function WorkoutDetails(context) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   const { params } = context;
-  const { start, end } = getWeekRange()
 
   const { data: workout } = await supabase
     .from("workouts")

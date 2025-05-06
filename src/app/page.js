@@ -40,7 +40,7 @@ export default function Home() {
         .from('workouts')
         .select('*')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        .order('start_time', { ascending: false });
         
       console.log("Fetched workouts:", data, "Error:", error);
 

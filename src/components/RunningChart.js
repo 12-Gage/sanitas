@@ -23,12 +23,15 @@ ChartJS.register(
 )
 
 export default function RunningChart({ data }) {
+  // Sort the data by start_time in ascending order (oldest to newest)
+  const sortedData = [...data].sort((a, b) => new Date(a.start_time) - new Date(b.start_time))
+
   const chartData = {
-    labels: data.map(item => item.created_at.split('T')[0]),
+    labels: sortedData.map(item => item.start_time.split('T')[0]),
     datasets: [
       {
         label: 'Miles Ran',
-        data: data.map(item => item.miles),
+        data: sortedData.map(item => item.miles),
         fill: false,
         borderColor: '#4f46e5', // indigo
         backgroundColor: '#6366f1',

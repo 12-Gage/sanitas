@@ -31,10 +31,10 @@ function intervalToSeconds(intervalStr) {
   }
 
 export default function WeightsChart({ data }) {
-
+  const sortedData = [...data].sort((a, b) => new Date(a.start_time) - new Date(b.start_time))
 
   const chartData = {
-    labels: data.map(item => item.start_time.split("T")[0]),
+    labels: sortedData.map(item => item.start_time.split('T')[0]),
     datasets: [
       {
         label: 'Duration of Weights Training',
