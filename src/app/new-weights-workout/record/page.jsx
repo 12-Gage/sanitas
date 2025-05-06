@@ -18,11 +18,11 @@ function formatMilliseconds(ms) {
     return `${hours}:${minutes}:${seconds}`;
 }
 
-export default function RecordRunWorkout() {
-    const router = useRouter()
-    const supabase = createClient()
+export default function RecordWeightsWorkout() {
+    const router = useRouter();
+    const supabase = createClient();
 
-    const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
     const rawTime = searchParams.get('time');
     const duration = rawTime ? formatMilliseconds(Number(rawTime)) : "00:00:00";
     const rawDate = searchParams.get('date').slice(0, -3);
@@ -30,7 +30,6 @@ export default function RecordRunWorkout() {
     const stamp = rawDate.split(" ")[1];
 
     const [workoutName, setWorkoutName] = useState('');
-    const [milesRan, setMilesRan] = useState('');
     const [location, setLocation] = useState('');
     const [notes, setNotes] = useState('');
     const [userId, setUserId] = useState(null);
@@ -39,7 +38,6 @@ export default function RecordRunWorkout() {
         const checkUser = async () => {
           const { data: { user } } = await supabase.auth.getUser()
           console.log("Logged-in user ID:", user?.id);
-    
           if (!user) {
             router.push('/login')
           } else {
@@ -53,17 +51,16 @@ export default function RecordRunWorkout() {
         e.preventDefault(); // stop page reload
 
         const { data, error } = await supabase
-            .from('workouts') // your table name
+            .from('workouts') 
             .insert([
                 {
                     user_id: userId,
                     duration: duration,
                     start_time: rawDate,
                     name: workoutName,
-                    miles: milesRan,
                     location: location,
                     notes: notes,
-                    type: "Run"
+                    type: "Weights"
                 }
             ]);
 
@@ -77,7 +74,7 @@ export default function RecordRunWorkout() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <h1 className="text-2xl font-bold mb-4">Record New Run Workout</h1>
+            <h1 className="text-2xl font-bold mb-4">Record New Weights Workout</h1>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>  
                     <label>Duration: {duration}</label>
@@ -96,15 +93,6 @@ export default function RecordRunWorkout() {
                     />
                 </div>
                 <div>
-                    <label>Miles Ran:</label>
-                    <input
-                        type="number"
-                        value={milesRan}
-                        onChange={(e) => setMilesRan(e.target.value)}
-                        className="border p-2"
-                    />
-                </div>
-                <div>
                     <label>Location:</label>
                     <input
                         type="text"
@@ -114,7 +102,7 @@ export default function RecordRunWorkout() {
                     />
                 </div>
                 <div>
-                    <label>Notes:</label>
+                    <label>Lifting Notes:</label>
                     <textarea
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}

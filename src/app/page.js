@@ -14,17 +14,19 @@ export default function Home() {
   const supabase = createClient()
   
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      console.log("Logged-in user ID:", user.id);
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push('/login') // Redirect to login if not authenticated
+        router.push('/login');
       } else {
-        setUser(user)
+        console.log("Welcome back", user.email);
+        setUser(user);
       }
-    }
-    checkUser()
-  }, [router])
+    };
+  
+    fetchUser();
+  }, []);
+  
 
   useEffect(() => {
     const fetchWorkouts = async () => {
